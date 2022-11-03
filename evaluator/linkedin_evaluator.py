@@ -15,7 +15,17 @@ def scrape_linkedin(user):
     dic['url_name'] = user
 
     options = Options()
-    options.headless = True 
+    options.headless = True
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--proxy-server='direct://'")
+    options.add_argument("--proxy-bypass-list=*")
+    options.add_argument("--start-maximized")
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--ignore-certificate-errors')
 
     driver = Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://www.linkedin.com")
@@ -27,17 +37,17 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-top-card--list-bullet'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
 
-    sleep(5.0)
+    sleep(2.0)
     name = driver.find_element(By.CLASS_NAME, 'text-heading-xlarge')
 
 
     dic['full_name'] = name.text
 
-    sleep(5.0)
+    sleep(2.0)
     profile_pic = driver.find_element(By.CLASS_NAME, 'pv-top-card-profile-picture' + '__' + 'image').get_attribute("src")
     dic['profile_image'] = user + "_image.jpg"
 
@@ -56,7 +66,7 @@ def scrape_linkedin(user):
         dic['has_changed_profile_image'] = False
         dic["face_found_in_profile_image"] = False
     try:
-        sleep(5.0)
+        sleep(2.0)
         background_pic = driver.find_element(By.CLASS_NAME, 'profile-background-image' + '__' + 'image').get_attribute("src")
         photo_response = requests.get(background_pic)
         if photo_response.status_code == 200:
@@ -69,7 +79,7 @@ def scrape_linkedin(user):
     dic['has_changed_background_image'] = True if background_pic else False
 
 
-    sleep(5.0)
+    sleep(2.0)
     connections = driver.find_element(By.CLASS_NAME, 'pv-top-card--list-bullet')
     print(connections.text.split(' '))
     if 'followers' in connections.text:
@@ -78,7 +88,7 @@ def scrape_linkedin(user):
         dic['connections'] = int(connections.text.split(' ')[0]) if "+" not in connections.text.split(' ')[0] else int(connections.text.split(' ')[0][:-1])
 
     try:
-        sleep(5.0)
+        sleep(2.0)
         about = driver.find_element(By.CLASS_NAME, 'pv-shared-text-with-see-more').text
     except:
         about = None
@@ -86,7 +96,7 @@ def scrape_linkedin(user):
     dic['about'] = about
 
 
-    sleep(5.0)
+    sleep(2.0)
     head_title = driver.find_element(By.CLASS_NAME, 'text-body-medium')
     dic['head_title'] = head_title.text
 
@@ -96,10 +106,10 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-profile-section' + '__' + 'section-info'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
-    sleep(5.0)
+    sleep(2.0)
     contact_info = driver.find_element(By.CLASS_NAME, 'pv-profile-section' + '__' + 'section-info')
     sons = contact_info.find_elements(By.CSS_SELECTOR, 'a')
     contact_dic = {}
@@ -115,7 +125,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     education = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -139,7 +149,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
 
@@ -162,7 +172,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     recommendation = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -184,7 +194,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
 
@@ -206,7 +216,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     projects = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -227,7 +237,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     certifications = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -249,7 +259,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     languages = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -271,7 +281,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'scaffold-finite-scroll__content'))
         )
-        sleep(5.0)
+        sleep(2.0)
     except:
         ...
     SCROLL_PAUSE_TIME = 1
