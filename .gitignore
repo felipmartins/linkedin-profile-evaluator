@@ -3,3 +3,5 @@ db.sqlite3
 not_used/
 media/*.jpg
 config/.env
+venv/
+

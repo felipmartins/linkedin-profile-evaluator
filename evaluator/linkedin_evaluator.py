@@ -7,13 +7,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .face_detection import FaceDetector
+from selenium.webdriver.chrome.options import Options
 
 def scrape_linkedin(user):
     dic = {}
 
     dic['url_name'] = user
 
-    driver = Chrome(service=Service(ChromeDriverManager().install()))
+    options = Options()
+    options.headless = True 
+
+    driver = Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://www.linkedin.com")
     driver.find_element(By.ID, 'session_key').send_keys('dezesseis.turma@gmail.com')
     driver.find_element(By.ID, 'session_password').send_keys('Umasenhaforte-123')
