@@ -1,38 +1,35 @@
 import requests
-from selenium.webdriver import Chrome
+from fake_useragent import UserAgent
+from selenium.webdriver import Firefox
 from time import sleep
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import FirefoxDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .face_detection import FaceDetector
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 
 def scrape_linkedin(user):
     dic = {}
 
     dic['url_name'] = user
-
+    ua = UserAgent()
+    user_agent = ua.random
     options = Options()
-    options.headless = True
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("--disable-extensions")
-    options.add_argument("--proxy-server='direct://'")
-    options.add_argument("--proxy-bypass-list=*")
-    options.add_argument("--start-maximized")
     options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--ignore-certificate-errors')
-    options.add_argument('--allow-running-insecure-content')
+    options.add_argument(f'user-agent={user_agent}')
     driver = Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://www.linkedin.com")
+    driver.save_screenshot('home.png')
     driver.find_element(By.ID, 'session_key').send_keys('dezesseis.turma@gmail.com')
+    driver.save_screenshot('home_with_email.png')
     driver.find_element(By.ID, 'session_password').send_keys('Umasenhaforte-123')
+    driver.save_screenshot('home_with_pass.png')
     driver.find_element(By.CLASS_NAME, 'sign-in-form'+ '__' + 'submit-button').submit()
     driver.get(f"https://www.linkedin.com/in/{user}")
+    driver.save_screenshot('user.png')
+    print(f"https://www.linkedin.com/in/{user}", user)
     try:
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-top-card--list-bullet'))
