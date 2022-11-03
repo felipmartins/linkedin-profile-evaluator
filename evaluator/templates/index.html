@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    LinkedIn Evaluator
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h1> Avaliador de LinkedIn! </h1>
+        <div class="container">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="github_user">Digite abaixo o username para seu perfil do LinkedIn:</label>
+                    <input type="text" class="form-control" id="linkedin_user" name="linkedin_user" placeholder="Escreva aqui o seu username público do LinkedIn." required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary ">Avaliar!</button>
+            </form>   
+        </div>
+    </div>
+    
+
+{% endblock %}

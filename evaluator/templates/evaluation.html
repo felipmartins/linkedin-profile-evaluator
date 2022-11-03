@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+
+{{ evaluation }}
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container g-3 py-3">
+    <div class="container text-center">
+        <h1> Avaliação realizada em {{ evaluation.evaluation_date }} </h1>
+        <img src="/media/{{evaluation.background_image}}" alt="Background Image " height="100">
+        <img src="/media/{{evaluation.profile_image}}" alt="LinkedIn Profile Picture" height="200">
+        <h2> {{ evaluation }} </h1>
+    </div>
+    <table class="table g-3 py-3">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th class="text-left" scope="col">Critérios de Avaliação</th>
+                <th scope="col">Encontrado</th>
+                <th scope="col">Esperado</th>
+                <th scope="col">Avaliação</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <tr>
+                <th class="text-left" scope="row">Mudou a foto de perfil?</th>
+                {% if evaluation.has_changed_profile_image %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_changed_profile_image %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Rosto encontrado pelo algoritmo na foto de perfil?</th>
+                {% if evaluation.face_found_in_profile_image %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.face_found_in_profile_image %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Mudou a foto de capa?</th>
+                {% if evaluation.has_changed_background_image %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_changed_background_image %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">E-mail localizado nas informações de contato***?</th>
+                {% if evaluation.has_email_in_contact_info %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_email_in_contact_info %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">GitHub localizado nas informações de contato?</th>
+                {% if evaluation.has_github_in_contact_info %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_github_in_contact_info %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem palavras chave no título do perfil?</th>
+                {% if evaluation.has_key_words_in_title %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_key_words_in_title %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">A seção "Sobre" foi encontrada?</th>
+                {% if evaluation.has_about_section %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_about_section %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">A Trybe se encontra na seção "Educação"?</th>
+                {% if evaluation.has_trybe_in_education %}
+                <td>Sim!</td>
+                {% else %}
+                <td>Não!</td>
+                {% endif %}
+                <td>Sim!</td>
+                {% if evaluation.has_trybe_in_education %}
+                <td>+5 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem 3 ou mais posts autorais no perfil?</th>
+                {% if evaluation.has_3_or_more_authoral_posts %}
+                <td>Sim! Posts: {{evaluation.authoral_posts}}</td>
+                {% else %}
+                <td>Não! Posts: {{evaluation.authoral_posts}}</td>
+                {% endif %}
+                <td>>= 3</td>
+                {% if evaluation.has_3_or_more_authoral_posts %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem 3 ou mais competências no LinkedIn?</th>
+                {% if evaluation.has_3_or_more_skills %}
+                <td>Sim! Competências: {{evaluation.num_skills}}</td>
+                {% else %}
+                <td>Não! Competências: {{evaluation.num_skills}}</td>
+                {% endif %}
+                <td>>= 3</td>
+                {% if evaluation.has_3_or_more_skills %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem 3 ou mais projetos disponibilizados no LinkedIn?</th>
+                {% if evaluation.has_3_or_more_projects %}
+                <td>Sim! Projetos: {{evaluation.num_projects}}</td>
+                {% else %}
+                <td>Não! Projetos: {{evaluation.num_projects}}</td>
+                {% endif %}
+                <td>>= 3</td>
+                {% if evaluation.has_3_or_more_projects %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem 3 ou mais recomendações no perfil do LinkedIn?</th>
+                {% if evaluation.has_3_or_more_recommendations %}
+                <td>Sim! Recomendações: {{evaluation.num_recommendations}}</td>
+                {% else %}
+                <td>Não! Recomendações: {{evaluation.num_recommendations}}</td>
+                {% endif %}
+                <td>>= 3</td>
+                {% if evaluation.has_3_or_more_recommendations %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th class="text-left" scope="row">Tem duzentas ou mais conexões no perfil do LinkedIn?</th>
+                {% if evaluation.has_200_or_more_connections %}
+                <td>Sim! Conexões: {{evaluation.connections}}</td>
+                {% else %}
+                <td>Não! Conexões: {{evaluation.connections}}</td>
+                {% endif %}
+                <td>>= 200</td>
+                {% if evaluation.has_200_or_more_connections %}
+                <td>+10 &#9989;</td>
+                {% else %}
+                <td>+0 &#10060;</td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <span style="font-size:7pt">***Só é possível identificar o email no perfil do LinkedIn caso você tenha se tornado uma conexão com o perfil que usamos para avaliar.</span>
+</div>
+{% endblock %}
