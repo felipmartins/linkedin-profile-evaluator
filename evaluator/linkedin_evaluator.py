@@ -1,20 +1,19 @@
 import requests
-from fake_useragent import UserAgent
-from selenium.webdriver import Firefox
+from selenium.webdriver import Chrome
 from time import sleep
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from webdriver_manager.firefox import FirefoxDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .face_detection import FaceDetector
 from selenium.webdriver.chrome.options import Options
 
-
 def scrape_linkedin(user):
     dic = {}
 
     dic['url_name'] = user
+
     options = Options()
     options.headless = True
     options.add_argument("--window-size=1920,1080")
@@ -28,19 +27,18 @@ def scrape_linkedin(user):
     options.add_argument('--no-sandbox')
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--allow-running-insecure-content')
-
     driver = Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://www.linkedin.com/uas/login")
-    sleep(2)
+    driver.save_screenshot('screenie.png')
     driver.find_element(By.NAME, 'session_key').send_keys('dezesseis.turma@gmail.com')
     sleep(2)
+    driver.save_screenshot('screenie2.png')
     driver.find_element(By.NAME, 'session_password').send_keys('Umasenhaforte-123')
     sleep(2)
+    driver.save_screenshot('screenie3.png')
     driver.find_element(By.CLASS_NAME, 'btn'+'__'+'primary--large').submit()
-    sleep(2)
     driver.get(f"https://www.linkedin.com/in/{user}")
     sleep(2)
-
     try:
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-top-card--list-bullet'))
@@ -50,7 +48,7 @@ def scrape_linkedin(user):
         ...
 
     sleep(1.0)
-    driver.save_screenshot('screenie.png')
+    driver.save_screenshot('screenie4.png')
     name = driver.find_element(By.CLASS_NAME, 'text-heading-xlarge')
 
 
@@ -90,7 +88,7 @@ def scrape_linkedin(user):
 
     sleep(1.0)
     connections = driver.find_element(By.CLASS_NAME, 'pv-top-card--list-bullet')
-    print(connections.text.split(' '))
+
     if 'followers' in connections.text:
         dic['connections'] = int(connections.text.split(' ')[1][-3::]) if "+" not in connections.text.split(' ')[1] else int(connections.text.split(' ')[1][-4:-1])
     else:
