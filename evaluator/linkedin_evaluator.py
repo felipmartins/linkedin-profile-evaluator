@@ -7,11 +7,26 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .face_detection import FaceDetector
+from selenium.webdriver.chrome.options import Options
 
 def scrape_linkedin(user):
     dic = {}
 
     dic['url_name'] = user
+
+    options = Options()
+    options.headless = True
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--proxy-server='direct://'")
+    options.add_argument("--proxy-bypass-list=*")
+    options.add_argument("--start-maximized")
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--allow-running-insecure-content')
 
     driver = Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://www.linkedin.com/uas/login")
