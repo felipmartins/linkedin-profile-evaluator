@@ -14,11 +14,16 @@ def scrape_linkedin(user):
     dic['url_name'] = user
 
     driver = Chrome(service=Service(ChromeDriverManager().install()))
-    driver.get("https://www.linkedin.com")
-    driver.find_element(By.ID, 'session_key').send_keys('dezesseis.turma@gmail.com')
-    driver.find_element(By.ID, 'session_password').send_keys('Umasenhaforte-123')
-    driver.find_element(By.CLASS_NAME, 'sign-in-form'+ '__' + 'submit-button').submit()
+    driver.get("https://www.linkedin.com/uas/login")
+    sleep(2)
+    driver.find_element(By.NAME, 'session_key').send_keys('dezesseis.turma@gmail.com')
+    sleep(2)
+    driver.find_element(By.NAME, 'session_password').send_keys('Umasenhaforte-123')
+    sleep(2)
+    driver.find_element(By.CLASS_NAME, 'btn'+'__'+'primary--large').submit()
+    sleep(2)
     driver.get(f"https://www.linkedin.com/in/{user}")
+    sleep(2)
     try:
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-top-card--list-bullet'))
