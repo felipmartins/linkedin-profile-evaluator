@@ -28,7 +28,7 @@ def scrape_linkedin(user):
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--allow-running-insecure-content')
 
-    driver = Chrome(service=Service(ChromeDriverManager().install()))
+    driver = Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://www.linkedin.com/uas/login")
     sleep(2)
     driver.find_element(By.NAME, 'session_key').send_keys('dezesseis.turma@gmail.com')
