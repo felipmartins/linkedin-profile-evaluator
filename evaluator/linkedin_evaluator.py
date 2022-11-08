@@ -1,19 +1,20 @@
 import requests
-from selenium.webdriver import Chrome
+from fake_useragent import UserAgent
+from selenium.webdriver import Firefox
 from time import sleep
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import FirefoxDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .face_detection import FaceDetector
 from selenium.webdriver.chrome.options import Options
 
+
 def scrape_linkedin(user):
     dic = {}
 
     dic['url_name'] = user
-
     options = Options()
     options.headless = True
     options.add_argument("--window-size=1920,1080")
@@ -39,21 +40,23 @@ def scrape_linkedin(user):
     sleep(2)
     driver.get(f"https://www.linkedin.com/in/{user}")
     sleep(2)
+
     try:
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-top-card--list-bullet'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
 
-    sleep(0.5)
+    sleep(1.0)
+    driver.save_screenshot('screenie.png')
     name = driver.find_element(By.CLASS_NAME, 'text-heading-xlarge')
 
 
     dic['full_name'] = name.text
 
-    sleep(0.5)
+    sleep(1.0)
     profile_pic = driver.find_element(By.CLASS_NAME, 'pv-top-card-profile-picture' + '__' + 'image').get_attribute("src")
     dic['profile_image'] = user + "_image.jpg"
 
@@ -72,7 +75,7 @@ def scrape_linkedin(user):
         dic['has_changed_profile_image'] = False
         dic["face_found_in_profile_image"] = False
     try:
-        sleep(0.5)
+        sleep(1.0)
         background_pic = driver.find_element(By.CLASS_NAME, 'profile-background-image' + '__' + 'image').get_attribute("src")
         photo_response = requests.get(background_pic)
         if photo_response.status_code == 200:
@@ -85,7 +88,7 @@ def scrape_linkedin(user):
     dic['has_changed_background_image'] = True if background_pic else False
 
 
-    sleep(0.5)
+    sleep(1.0)
     connections = driver.find_element(By.CLASS_NAME, 'pv-top-card--list-bullet')
     print(connections.text.split(' '))
     if 'followers' in connections.text:
@@ -94,7 +97,7 @@ def scrape_linkedin(user):
         dic['connections'] = int(connections.text.split(' ')[0]) if "+" not in connections.text.split(' ')[0] else int(connections.text.split(' ')[0][:-1])
 
     try:
-        sleep(0.5)
+        sleep(1.0)
         about = driver.find_element(By.CLASS_NAME, 'pv-shared-text-with-see-more').text
     except:
         about = None
@@ -102,7 +105,7 @@ def scrape_linkedin(user):
     dic['about'] = about
 
 
-    sleep(0.5)
+    sleep(1.0)
     head_title = driver.find_element(By.CLASS_NAME, 'text-body-medium')
     dic['head_title'] = head_title.text
 
@@ -112,10 +115,10 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pv-profile-section' + '__' + 'section-info'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
-    sleep(0.5)
+    sleep(1.0)
     contact_info = driver.find_element(By.CLASS_NAME, 'pv-profile-section' + '__' + 'section-info')
     sons = contact_info.find_elements(By.CSS_SELECTOR, 'a')
     contact_dic = {}
@@ -131,7 +134,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     education = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -155,7 +158,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
 
@@ -178,7 +181,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     recommendation = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -200,7 +203,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
 
@@ -222,7 +225,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     projects = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -243,7 +246,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     certifications = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -265,7 +268,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     languages = driver.find_elements(By.CLASS_NAME, 'pvs-list' + '__' + 'paged-list-item')
@@ -287,7 +290,7 @@ def scrape_linkedin(user):
         element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'scaffold-finite-scroll__content'))
         )
-        sleep(0.5)
+        sleep(1.0)
     except:
         ...
     SCROLL_PAUSE_TIME = 1
